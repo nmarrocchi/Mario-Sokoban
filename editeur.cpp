@@ -16,6 +16,8 @@ Rôle : gestion de l'éditeur de niveaux.
 
 void editeur()
 {
+	printf("Editeur \n");
+
 	sf::Sprite *mur = NULL, *caisse = NULL, *caisseOK = NULL, *objectif = NULL, *marioActuel = NULL;
 	sf::IntRect position, positionJoueur;
 	sf::Event event;
@@ -26,30 +28,30 @@ void editeur()
 
 
 	// Chargement des sprites (décors, personnage...)
+
 	sf::Texture textureMur;
-	sf::Texture textureCaisse;
-	sf::Texture textureCaisseOK;
-	sf::Texture textureObjectif;
-	sf::Texture texturePaimonBas;
-	sf::Texture texturePaimonGauche;
-	sf::Texture texturePaimonHaut;
-	sf::Texture texturePaimonDroite;
-
-
 	if (!textureMur.loadFromFile("img/mur.jpg"));
 
+	sf::Texture textureCaisse;
 	if (!textureCaisse.loadFromFile("img/caisse.jpg"));
 
+	sf::Texture textureCaisseOK;
 	if (!textureCaisseOK.loadFromFile("img/caisse_ok.jpg"));
 
-	if (!textureObjectif.loadFromFile("img/objectif.jpg"));
+	sf::Texture textureObjectif;
+	if (!textureObjectif.loadFromFile("img/objectif.png"));
 
-	if (!texturePaimonBas.loadFromFile("img/paimon_bas.jpg"));
+	sf::Texture texturePaimonBas;
+	if (!texturePaimonBas.loadFromFile("img/mario_bas.gif"));
 
-	if (!texturePaimonGauche.loadFromFile("img/paimon_gauche.jpg"));
+	sf::Texture texturePaimonGauche;
+	if (!texturePaimonGauche.loadFromFile("img/mario_gauche.gif"));
 
-	if (!texturePaimonHaut.loadFromFile("img/paimon_haut.jpg"));
+	sf::Texture texturePaimonHaut;
+	if (!texturePaimonHaut.loadFromFile("img/mario_haut.gif"));
 
-	if (!texturePaimonDroite.loadFromFile("img/paimon_droite.jpg"));
+	sf::Texture texturePaimonDroite;
+	if (!texturePaimonDroite.loadFromFile("img/mario_droite.gif"));
+
 
 }

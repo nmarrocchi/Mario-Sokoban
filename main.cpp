@@ -11,16 +11,27 @@ int main(int argc, char *argv[])
 {
 
 
-	// - Texture du menu
+	sf::Sprite *ecran = NULL, *menu = NULL;
+	sf::IntRect positionMenu;
+	sf::Event event;
+
+
+
+
+	/* • Création de la fenêtre • */
 	sf::RenderWindow window{ sf::VideoMode(1000, 1000), "Paimon's Escape" };
 	sf::Texture texture;
+	sf::Image icon;
+
+	icon.loadFromFile("img/icon.png");
+	window.setIcon(192, 192, icon.getPixelsPtr());
+
+	/* • Texture du menu • */
 	if (!texture.loadFromFile("img/menu.png"));
+
 
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
-
-	// - Navigation entre les options
-	sf::Event event;
 
 	sf::VideoMode::VideoMode(LARGEUR_FENETRE, HAUTEUR_FENETRE, 32);
 

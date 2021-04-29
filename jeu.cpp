@@ -14,49 +14,44 @@ Rôle : Fonctions du jeu.
 
 void jouer()
 {
+	printf("Jouer \n");
 
 	sf::Sprite *paimon[4] = { NULL }; // 4 surfaces pour chacune des directions de mario
-	sf::Sprite *mur = NULL, *caisse = NULL, *caisseOK = NULL, *objectif = NULL, *marioActuel = NULL;
+	sf::Sprite *mur = NULL, *caisse = NULL, *caisseOK = NULL, *objectif = NULL, *paimonActuel = NULL;
 	sf::IntRect position, positionJoueur;
-	sf::Event event;
 
 	int continuer = 1, objectifsRestants = 0, i = 0, j = 0;
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
 
 	// Chargement des sprites (décors, personnage...)
+
 	sf::Texture textureMur;
-	sf::Texture textureCaisse;
-	sf::Texture textureCaisseOK;
-	sf::Texture textureObjectif;
-	sf::Texture texturePaimonBas;
-	sf::Texture texturePaimonGauche;
-	sf::Texture texturePaimonHaut;
-	sf::Texture texturePaimonDroite;
-
-
 	if (!textureMur.loadFromFile("img/mur.jpg"));
 
+	sf::Texture textureCaisse;
 	if (!textureCaisse.loadFromFile("img/caisse.jpg"));
 
+	sf::Texture textureCaisseOK;
 	if (!textureCaisseOK.loadFromFile("img/caisse_ok.jpg"));
 
-	if (!textureObjectif.loadFromFile("img/objectif.jpg"));
+	sf::Texture textureObjectif;
+	if (!textureObjectif.loadFromFile("img/objectif.png"));
 
-	if (!texturePaimonBas.loadFromFile("img/paimon_bas.jpg"));
+	sf::Texture texturePaimonBas;
+	if (!texturePaimonBas.loadFromFile("img/mario_bas.gif"));
 
-	if (!texturePaimonGauche.loadFromFile("img/paimon_gauche.jpg"));
+	sf::Texture texturePaimonGauche;
+	if (!texturePaimonGauche.loadFromFile("img/mario_gauche.gif"));
 
-	if (!texturePaimonHaut.loadFromFile("img/paimon_haut.jpg"));
+	sf::Texture texturePaimonHaut;
+	if (!texturePaimonHaut.loadFromFile("img/mario_haut.gif"));
 
-	if (!texturePaimonDroite.loadFromFile("img/paimon_droite.jpg"));
+	sf::Texture texturePaimonDroite;
+	if (!texturePaimonDroite.loadFromFile("img/mario_droite.gif"));
+
 
 
 	paimonActuel = paimon[BAS]; // Paimon sera dirigé vers le bas au départ
-
-
-
-		// Effacement de l'écran
-		SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
 
 }
 
