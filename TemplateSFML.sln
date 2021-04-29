@@ -5,6 +5,11 @@ VisualStudioVersion = 15.0.28307.1267
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TemplateSFML", "TemplateSFML.vcxproj", "{8D0E226A-2C99-4D73-B129-72D98667B09D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0BDC8B63-29DF-4EDC-8930-D73D57E46BE9}"
+	ProjectSection(SolutionItems) = preProject
+		main.cpp = main.cpp
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64

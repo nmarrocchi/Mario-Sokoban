@@ -15,6 +15,6 @@ Définition des constantes pour tout le programme (taille de la fenêtre etc...)
 #define HAUTEUR_FENETRE     TAILLE_BLOC * NB_BLOCS_HAUTEUR
 
 enum { HAUT, BAS, GAUCHE, DROITE };
-enum { VIDE, MUR, CAISSE, OBJECTIF, MARIO, CAISSE_OK };
+enum { VIDE, MUR, CAISSE, OBJECTIF, PAIMON, CAISSE_OK };
 
 #endif

@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 #include <iostream>
 
 #include "const.h"
@@ -6,13 +7,14 @@
 #include "editeur.h"
 
 
-
 int main(int argc, char *argv[])
 {
+
+
 	// - Texture du menu
-	sf::RenderWindow window{ sf::VideoMode(1200, 1000), "Mario Sokoban" };
+	sf::RenderWindow window{ sf::VideoMode(1000, 1000), "Paimon's Escape" };
 	sf::Texture texture;
-	if (!texture.loadFromFile("img/menu.jpg"));
+	if (!texture.loadFromFile("img/menu.png"));
 
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
@@ -38,7 +40,7 @@ int main(int argc, char *argv[])
 			}
 			else if (event.type == sf::Event::KeyPressed)
 			{
-				/*
+				
 				if (event.key.code == sf::Keyboard::Numpad1 || event.key.code == sf::Keyboard::Num1)
 				{
 					// - Envoie vers la page de jeu
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
 					// - Envoie vers l'éditeur de niveau
 					editeur();
 				}
-				*/
+				
 			}
 		}
 

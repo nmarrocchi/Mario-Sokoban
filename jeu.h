@@ -2,10 +2,15 @@
 jeu.h
 ----------
 
-Prototypes des fonctions du jeu.
+Rôle : Prototypes des fonctions du jeu.
 */
 
-void jouer()
-{
+#ifndef DEF_JEU
+#define DEF_JEU
 
-}
+void jouer();
+void deplacerJoueur();
+void deplacerCaisse();
+
+
+#endif

@@ -1,10 +1,8 @@
 /*
-editeur.c
----------
+jeu.cpp
+-----
 
-Par mateo21, pour Le Site du Zér0 (www.siteduzero.com)
-
-Rôle : gestion de l'éditeur de niveaux.
+Rôle : Fonctions du jeu.
 */
 
 #include <SFML/Graphics.hpp>
@@ -12,18 +10,18 @@ Rôle : gestion de l'éditeur de niveaux.
 #include <iostream>
 
 #include "const.h"
-#include "editeur.h"
+#include "jeu.h"
 
-void editeur()
+void jouer()
 {
+
+	sf::Sprite *paimon[4] = { NULL }; // 4 surfaces pour chacune des directions de mario
 	sf::Sprite *mur = NULL, *caisse = NULL, *caisseOK = NULL, *objectif = NULL, *marioActuel = NULL;
 	sf::IntRect position, positionJoueur;
 	sf::Event event;
 
-	int continuer = 1, clicGaucheEnCours = 0, clicDroitEnCours = 0;
-	int objetActuel = MUR, i = 0, j = 0;
+	int continuer = 1, objectifsRestants = 0, i = 0, j = 0;
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
-
 
 	// Chargement des sprites (décors, personnage...)
 	sf::Texture textureMur;
@@ -52,4 +50,23 @@ void editeur()
 
 	if (!texturePaimonDroite.loadFromFile("img/paimon_droite.jpg"));
 
+
+	paimonActuel = paimon[BAS]; // Paimon sera dirigé vers le bas au départ
+
+
+
+		// Effacement de l'écran
+		SDL_FillRect(ecran, NULL, SDL_MapRGB(ecran->format, 255, 255, 255));
+
 }
+
+void deplacerJoueur()
+{
+
+}
+
+void deplacerCaisse()
+{
+
+}
+

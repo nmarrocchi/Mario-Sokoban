@@ -131,15 +131,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="editeur.cpp" />
+    <ClCompile Include="jeu.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="const.h" />
     <ClInclude Include="editeur.h" />
     <ClInclude Include="jeu.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="TemplateSFML.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
