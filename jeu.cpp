@@ -16,14 +16,14 @@ void jouer()
 {
 	printf("Jouer \n");
 
-	sf::Sprite *paimon[4] = { NULL }; // 4 surfaces pour chacune des directions de mario
+	sf::Sprite *paimon[4] = { NULL }; /* • 4 surfaces pour chacune des directions de mario • */
 	sf::Sprite *mur = NULL, *caisse = NULL, *caisseOK = NULL, *objectif = NULL, *paimonActuel = NULL;
 	sf::IntRect position, positionJoueur;
 
 	int continuer = 1, objectifsRestants = 0, i = 0, j = 0;
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
 
-	// Chargement des sprites (décors, personnage...)
+	/* • Chargement des sprites (décors, personnage...) • */
 
 	sf::Texture textureMur;
 	if (!textureMur.loadFromFile("img/mur.jpg"));
@@ -51,7 +51,7 @@ void jouer()
 
 
 
-	paimonActuel = paimon[BAS]; // Paimon sera dirigé vers le bas au départ
+	paimonActuel = paimon[BAS]; /* • Paimon sera dirigé vers le bas au départ • */
 
 }
 

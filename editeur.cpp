@@ -2,9 +2,7 @@
 editeur.c
 ---------
 
-Par mateo21, pour Le Site du Zér0 (www.siteduzero.com)
-
-Rôle : gestion de l'éditeur de niveaux.
+Rôle : Gestion de l'éditeur de niveaux.
 */
 
 #include <SFML/Graphics.hpp>
@@ -27,7 +25,7 @@ void editeur()
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
 
 
-	// Chargement des sprites (décors, personnage...)
+	/* • Chargement des sprites (décors, personnage...) • */
 
 	sf::Texture textureMur;
 	if (!textureMur.loadFromFile("img/mur.jpg"));

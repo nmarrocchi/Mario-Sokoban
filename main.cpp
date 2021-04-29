@@ -35,16 +35,16 @@ int main(int argc, char *argv[])
 
 	sf::VideoMode::VideoMode(LARGEUR_FENETRE, HAUTEUR_FENETRE, 32);
 
-	// - Fait tourner le programme jusqu'à ce que la fenêtre soit fermée
+	/* • Fait tourner le programme jusqu'à ce que la fenêtre soit fermée • */
 	while (window.isOpen())
 	{
 		window.draw(sprite);
 
-		// - Inspection de tous les évènements de la fenêtre qui ont été émis depuis la précédente itération
+		/* • Inspection de tous les évènements de la fenêtre qui ont été émis depuis la précédente itération • */
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			// - Fermeture de la fenêtre demandée
+			/* • Fermeture de la fenêtre demandée • */
 			if (event.type == sf::Event::Closed)
 			{
 				window.close();
@@ -54,12 +54,12 @@ int main(int argc, char *argv[])
 				
 				if (event.key.code == sf::Keyboard::Numpad1 || event.key.code == sf::Keyboard::Num1)
 				{
-					// - Envoie vers la page de jeu
+					/* • Envoie vers la page de jeu • */
 					jouer();
 				}
 				else if (event.key.code == sf::Keyboard::Numpad2 || event.key.code == sf::Keyboard::Num2)
 				{
-					// - Envoie vers l'éditeur de niveau
+					/* • Envoie vers l'éditeur de niveau • */
 					editeur();
 				}
 				
