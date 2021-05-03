@@ -2,6 +2,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "const.h"
 #include "jeu.h"
@@ -11,29 +13,38 @@
 int main(int argc, char *argv[])
 {
 
+	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
 
 	sf::Sprite *ecran = NULL, *menu = NULL;
 	sf::IntRect positionMenu;
 	sf::Event event;
 
-	sf::SoundBuffer buffer;
-	buffer.loadFromFile("/music/background.mp3");
-	sf::Sound sound;
-	sound.setBuffer(buffer);
-	sound.play();
+	sf::Music music;
+	if (!music.openFromFile("music/background.ogg"))
+	{
+		printf("Musique non chargée \n");
+	}
+	else {
+		printf("La musique a chargée \n");
+		music.play();
+	}
 
 
 	/* • Création de la fenêtre • */
-	sf::RenderWindow window;
-	window.create(sf::VideoMode(1000, 1000), "Paimon's Escape");
+	sf::RenderWindow window{ sf::VideoMode(1000, 1000), "Paimon's Escape" };
 	sf::Texture texture;
 	sf::Image icon;
 
+	/* • Ajout d'un icône personnalisé • */
 	icon.loadFromFile("img/icon.png");
 	window.setIcon(192, 192, icon.getPixelsPtr());
 
 	/* • Texture du menu • */
-	if (!texture.loadFromFile("img/menu.png"));
+	if (!texture.loadFromFile("img/menu.png"))
+	{
+		// erreur
+	}
+
 
 
 	sf::Sprite sprite;
@@ -46,11 +57,11 @@ int main(int argc, char *argv[])
 	{
 		window.draw(sprite);
 
-		/* • Inspection de tous les évènements de la fenêtre qui ont été émis depuis la précédente itération • */
+		/* • Inspection de tous les évènements de la fenêtre qui ont été émis • */
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			/* • Fermeture de la fenêtre demandée • */
+			/* • Fermeture de la fenêtre • */
 			if (event.type == sf::Event::Closed)
 			{
 				window.close();
@@ -60,23 +71,19 @@ int main(int argc, char *argv[])
 
 				if (event.key.code == sf::Keyboard::Numpad1 || event.key.code == sf::Keyboard::Num1)
 				{
-					/* • Envoie vers la page de jeu • */
-					delete(menu);
-					
-					jouer(ecran);
+					/* • Envoie vers le jeu • */
+					//jouer(&window);
 				}
 				else if (event.key.code == sf::Keyboard::Numpad2 || event.key.code == sf::Keyboard::Num2)
 				{
 					/* • Envoie vers l'éditeur de niveau • */
-					editeur(ecran);
+					delete(menu);
+					editeur(&window);
 				}
-
 			}
 		}
-
+		window.draw(sprite);
 		window.display();
 	}
-	delete(menu);
-
-	return EXIT_SUCCESS;
+	return 0;
 }

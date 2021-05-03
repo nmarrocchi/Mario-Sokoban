@@ -5,16 +5,22 @@ fichiers.c++
 Rôle : Fonctions de lecture / écriture de fichiers de niveau.
 */
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
-#include <iostream>>
-#include <fstream>
-using namespace std;
+#include <SFML/Audio.hpp>
+#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+
 
 #include "const.h"
 #include "jeu.h"
 #include "editeur.h"
 #include "fichiers.h"
+
+using namespace std;
 
 int chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR])
 {
@@ -23,10 +29,7 @@ int chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR])
 	int i = 0, j = 0;
 
 
-	fichier = fopen("niveaux.lvl", "r");
-	//ifstream fichier("niveaux.lvl");
-
-
+	fichier = fopen("levels.lvl", "r");
 	if (fichier == NULL)
 		return 0;
 
@@ -66,7 +69,7 @@ int sauvegarderNiveau(int niveau[][NB_BLOCS_HAUTEUR])
 	FILE* fichier = NULL;
 	int i = 0, j = 0;
 
-	fichier = fopen("niveaux.lvl", "r");
+	fichier = fopen("levels.lvl", "w");
 
 	if (fichier == NULL)
 		return 0;

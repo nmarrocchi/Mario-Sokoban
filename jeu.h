@@ -8,7 +8,7 @@ Rôle : Prototypes des fonctions du jeu.
 #define DEF_JEU
 #include <SFML/Graphics/Rect.hpp>
 
-void jouer(sf::Sprite* ecran);
+void jouer(sf::RenderWindow* window);
 void deplacerJoueur();
 void deplacerCaisse();
 

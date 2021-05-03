@@ -5,9 +5,11 @@ editeur.h
 Prototypes des fonctions de gestion de l'éditeur de niveaux.
 */
 
-#ifndef DEF_EDITEUR
-#define DEF_EDITEUR
+#define _CRT_SECURE_NO_WARNINGS
 
-void editeur(sf::Sprite* ecran);
+#include <stdlib.h>
+#include <stdio.h>
+#include <iostream>
+#include "const.h"
 
-#endif
+void editeur(sf::RenderWindow* window);

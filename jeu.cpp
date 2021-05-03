@@ -7,13 +7,16 @@ Rôle : Fonctions du jeu.
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "const.h"
 #include "jeu.h"
 #include "fichiers.h"
 
-void jouer(sf::Sprite* ecran)
+void jouer(sf::RenderWindow* window)
 {
 	printf("Jouer \n");
 
