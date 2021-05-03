@@ -8,6 +8,6 @@ Prototypes des fonctions de gestion de l'éditeur de niveaux.
 #ifndef DEF_EDITEUR
 #define DEF_EDITEUR
 
-void editeur();
+void editeur(sf::Sprite* ecran);
 
 #endif

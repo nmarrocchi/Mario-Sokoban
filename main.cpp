@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 
 #include "const.h"
@@ -15,11 +16,16 @@ int main(int argc, char *argv[])
 	sf::IntRect positionMenu;
 	sf::Event event;
 
-
+	sf::SoundBuffer buffer;
+	buffer.loadFromFile("/music/background.mp3");
+	sf::Sound sound;
+	sound.setBuffer(buffer);
+	sound.play();
 
 
 	/* • Création de la fenêtre • */
-	sf::RenderWindow window{ sf::VideoMode(1000, 1000), "Paimon's Escape" };
+	sf::RenderWindow window;
+	window.create(sf::VideoMode(1000, 1000), "Paimon's Escape");
 	sf::Texture texture;
 	sf::Image icon;
 
@@ -33,7 +39,7 @@ int main(int argc, char *argv[])
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
 
-	sf::VideoMode::VideoMode(LARGEUR_FENETRE, HAUTEUR_FENETRE, 32);
+	sf::VideoMode(LARGEUR_FENETRE, HAUTEUR_FENETRE, 32);
 
 	/* • Fait tourner le programme jusqu'à ce que la fenêtre soit fermée • */
 	while (window.isOpen())
@@ -51,23 +57,26 @@ int main(int argc, char *argv[])
 			}
 			else if (event.type == sf::Event::KeyPressed)
 			{
-				
+
 				if (event.key.code == sf::Keyboard::Numpad1 || event.key.code == sf::Keyboard::Num1)
 				{
 					/* • Envoie vers la page de jeu • */
-					jouer();
+					delete(menu);
+					
+					jouer(ecran);
 				}
 				else if (event.key.code == sf::Keyboard::Numpad2 || event.key.code == sf::Keyboard::Num2)
 				{
 					/* • Envoie vers l'éditeur de niveau • */
-					editeur();
+					editeur(ecran);
 				}
-				
+
 			}
 		}
 
 		window.display();
 	}
+	delete(menu);
 
-	return 0;
+	return EXIT_SUCCESS;
 }

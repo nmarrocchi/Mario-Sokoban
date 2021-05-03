@@ -11,8 +11,9 @@ Rôle : Gestion de l'éditeur de niveaux.
 
 #include "const.h"
 #include "editeur.h"
+#include "fichiers.h"
 
-void editeur()
+void editeur(sf::Sprite* ecran)
 {
 	printf("Editeur \n");
 
@@ -50,6 +51,119 @@ void editeur()
 
 	sf::Texture texturePaimonDroite;
 	if (!texturePaimonDroite.loadFromFile("img/mario_droite.gif"));
+
+	/* • Print chargerNiveau(carte) value • */
+	bool level = (!chargerNiveau(carte));
+	printf("%d\n", level);
+
+
+	if (!chargerNiveau(carte))
+		exit(printf("Fail to load the map")); /* • On arrête le jeu si on n'a pas pu charger le niveau • */
+
+
+	/*
+		// Boucle infinie de l'éditeur
+	while (continuer)
+	{
+		*ecran.waitEvent(&event);
+		switch (event.type)
+		{
+		case sf::QUIT:
+			continuer = 0;
+			break;
+		case sf::MOUSEBUTTONDOWN:
+			if (event.button.button == sf::BUTTON_LEFT)
+			{
+				// On met l'objet actuellement choisi (mur, caisse...) à l'endroit du clic
+				carte[event.button.x / TAILLE_BLOC][event.button.y / TAILLE_BLOC] = objetActuel;
+				clicGaucheEnCours = 1; // On active un booléen pour retenir qu'un bouton est enfoncé
+			}
+			else if (event.button.button == sf::BUTTON_RIGHT) // Le clic droit sert à effacer
+			{
+				carte[event.button.x / TAILLE_BLOC][event.button.y / TAILLE_BLOC] = VIDE;
+				clicDroitEnCours = 1;
+			}
+			break;
+		case sf::MOUSEBUTTONUP: // On désactive le booléen qui disait qu'un bouton était enfoncé
+			if (event.button.button == sf::BUTTON_LEFT)
+				clicGaucheEnCours = 0;
+			else if (event.button.button == sf::BUTTON_RIGHT)
+				clicDroitEnCours = 0;
+			break;
+		case sf::MOUSEMOTION:
+			if (clicGaucheEnCours) // Si on déplace la souris et que le bouton gauche de la souris est enfoncé
+			{
+				carte[event.motion.x / TAILLE_BLOC][event.motion.y / TAILLE_BLOC] = objetActuel;
+			}
+			else if (clicDroitEnCours) // Pareil pour le bouton droit de la souris
+			{
+				carte[event.motion.x / TAILLE_BLOC][event.motion.y / TAILLE_BLOC] = VIDE;
+			}
+			break;
+		case sf::KEYDOWN:
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_ESCAPE:
+				continuer = 0;
+				break;
+			case SDLK_s:
+				sauvegarderNiveau(carte);
+				break;
+			case SDLK_c:
+				chargerNiveau(carte);
+				break;
+			case SDLK_KP1:
+				objetActuel = MUR;
+				break;
+			case SDLK_KP2:
+				objetActuel = CAISSE;
+				break;
+			case SDLK_KP3:
+				objetActuel = OBJECTIF;
+				break;
+			case SDLK_KP4:
+				objetActuel = PAIMON;
+				break;
+			}
+			break;
+		}
+
+		// Effacement de l'écran
+		sf::FillRect(ecran, NULL, sf::MapRGB(ecran->format, 255, 255, 255));
+
+		// Placement des objets à l'écran
+		for (i = 0; i < NB_BLOCS_LARGEUR; i++)
+		{
+			for (j = 0; j < NB_BLOCS_HAUTEUR; j++)
+			{
+				position.x = i * TAILLE_BLOC;
+				position.y = j * TAILLE_BLOC;
+
+				switch (carte[i][j])
+				{
+				case MUR:
+					sf::BlitSurface(mur, NULL, ecran, &position);
+					break;
+				case CAISSE:
+					sf::BlitSurface(caisse, NULL, ecran, &position);
+					break;
+				case OBJECTIF:
+					sf::BlitSurface(objectif, NULL, ecran, &position);
+					break;
+				case PAIMON:
+					sf::BlitSurface(paimon, NULL, ecran, &position);
+					break;
+				}
+			}
+		}
+
+		// Mise à jour de l'écran
+		sf::Flip(ecran);
+	}
+
+	*/
+
+
 
 
 }

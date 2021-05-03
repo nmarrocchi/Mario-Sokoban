@@ -11,14 +11,16 @@ Rôle : Fonctions du jeu.
 
 #include "const.h"
 #include "jeu.h"
+#include "fichiers.h"
 
-void jouer()
+void jouer(sf::Sprite* ecran)
 {
 	printf("Jouer \n");
 
-	sf::Sprite *paimon[4] = { NULL }; /* • 4 surfaces pour chacune des directions de mario • */
+	sf::Sprite *paimon[4] = { NULL }; /* • 4 surfaces pour chacune des directions de paimon • */
 	sf::Sprite *mur = NULL, *caisse = NULL, *caisseOK = NULL, *objectif = NULL, *paimonActuel = NULL;
 	sf::IntRect position, positionJoueur;
+	sf::Event event;
 
 	int continuer = 1, objectifsRestants = 0, i = 0, j = 0;
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
@@ -53,6 +55,10 @@ void jouer()
 
 	paimonActuel = paimon[BAS]; /* • Paimon sera dirigé vers le bas au départ • */
 
+		/* • Chargement du niveau • */
+	if (!chargerNiveau(carte));
+		exit(printf("Fail to load the map")); /* • On arrête le jeu si on n'a pas pu charger le niveau • */
+
 }
 
 void deplacerJoueur()
@@ -64,4 +70,3 @@ void deplacerCaisse()
 {
 
 }
-
