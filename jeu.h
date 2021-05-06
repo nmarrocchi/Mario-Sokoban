@@ -9,7 +9,7 @@ Rôle : Prototypes des fonctions du jeu.
 #include <SFML/Graphics/Rect.hpp>
 
 void jouer(sf::RenderWindow* window);
-void deplacerJoueur();
+void deplacerJoueur(int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *pos, int direction, sf::RenderWindow* window);
 void deplacerCaisse();
 
 

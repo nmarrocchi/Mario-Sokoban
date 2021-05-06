@@ -24,14 +24,21 @@ using namespace std;
 
 int chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR])
 {
-	FILE* fichier = NULL;
+
 	char ligneFichier[NB_BLOCS_LARGEUR * NB_BLOCS_HAUTEUR + 1] = { 0 };
 	int i = 0, j = 0;
 
-
-	fichier = fopen("levels.lvl", "r");
-	if (fichier == NULL)
+	FILE *fichier = fopen("levels.lvl", "r");
+	if (fichier == NULL) {
+		printf("Not existing");
 		return 0;
+
+		// Le fichier n'existe pas
+	}
+	else {
+		printf("Existing");
+		// le fichier existe !
+	}
 
 	fgets(ligneFichier, NB_BLOCS_LARGEUR * NB_BLOCS_HAUTEUR + 1, fichier);
 
@@ -81,6 +88,8 @@ int sauvegarderNiveau(int niveau[][NB_BLOCS_HAUTEUR])
 			fprintf(fichier, "%d", niveau[j][i]);
 		}
 	}
+
+	printf("File Saved");
 
 	fclose(fichier);
 	return 1;

@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
 #include <stdlib.h>
@@ -10,17 +11,22 @@
 #include "editeur.h"
 
 
+
 int main(int argc, char *argv[])
 {
 
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
 
 	sf::Sprite *ecran = NULL, *menu = NULL;
-	sf::IntRect positionMenu;
+	sf::Vector2i positionMenu(0, 0);
 	sf::Event event;
 
+	int continuer = 1;
+
+
+	// • Musique de fond
 	sf::Music music;
-	if (!music.openFromFile("music/background.ogg"))
+	if (!music.openFromFile("music/ScreenTitle.ogg"))
 	{
 		printf("Musique non chargée \n");
 	}
@@ -30,60 +36,59 @@ int main(int argc, char *argv[])
 	}
 
 
-	/* • Création de la fenêtre • */
-	sf::RenderWindow window{ sf::VideoMode(1000, 1000), "Paimon's Escape" };
-	sf::Texture texture;
-	sf::Image icon;
+	//Création de la fenêtre
+	sf::RenderWindow window{ sf::VideoMode(816, 816), "Elltaker" };
+	sf::Texture textureMenu;
 
-	/* • Ajout d'un icône personnalisé • */
-	icon.loadFromFile("img/icon.png");
-	window.setIcon(192, 192, icon.getPixelsPtr());
-
-	/* • Texture du menu • */
-	if (!texture.loadFromFile("img/menu.png"))
+	// • Texture du menu
+	if (!textureMenu.loadFromFile("img/menu.png"))
 	{
 		// erreur
 	}
 
+	sf::Sprite spriteMenu;
+	spriteMenu.setTexture(textureMenu);
 
 
-	sf::Sprite sprite;
-	sprite.setTexture(texture);
+	// • Ajout d'un icône personnalisé
+	sf::Image icon;
+	icon.loadFromFile("img/icon.png");
+	window.setIcon(192, 192, icon.getPixelsPtr());
 
-	sf::VideoMode(LARGEUR_FENETRE, HAUTEUR_FENETRE, 32);
+	window.draw(spriteMenu);
+	window.display();
 
-	/* • Fait tourner le programme jusqu'à ce que la fenêtre soit fermée • */
-	while (window.isOpen())
+	while (continuer)
 	{
-		window.draw(sprite);
 
-		/* • Inspection de tous les évènements de la fenêtre qui ont été émis • */
-		sf::Event event;
-		while (window.pollEvent(event))
+		window.waitEvent(event);
+
+		switch (event.type)
 		{
-			/* • Fermeture de la fenêtre • */
-			if (event.type == sf::Event::Closed)
+			// • Fermeture de la fenêtre
+		case sf::Event::Closed:
+			continuer = 0;
+			break;
+		case sf::Event::KeyPressed:
+			switch (event.key.code)
 			{
-				window.close();
-			}
-			else if (event.type == sf::Event::KeyPressed)
-			{
+			case sf::Keyboard::Space: // • Veut arrêter le jeu
+				continuer = 0;
+				break;
+			case sf::Keyboard::Numpad1: // • Demande à jouer
+				printf("jouer() \n");
+				jouer(&window);
+				break;
+			case sf::Keyboard::Numpad2: // • Demande l'éditeur de niveaux
+				printf("editeur() \n");
+				editeur(&window);
+				break;
 
-				if (event.key.code == sf::Keyboard::Numpad1 || event.key.code == sf::Keyboard::Num1)
-				{
-					/* • Envoie vers le jeu • */
-					//jouer(&window);
-				}
-				else if (event.key.code == sf::Keyboard::Numpad2 || event.key.code == sf::Keyboard::Num2)
-				{
-					/* • Envoie vers l'éditeur de niveau • */
-					delete(menu);
-					editeur(&window);
-				}
 			}
+			break;
 		}
-		window.draw(sprite);
-		window.display();
+
 	}
+
 	return 0;
 }
