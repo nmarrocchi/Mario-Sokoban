@@ -30,14 +30,15 @@ int chargerNiveau(int niveau[][NB_BLOCS_HAUTEUR])
 
 	FILE *fichier = fopen("levels.lvl", "r");
 	if (fichier == NULL) {
-		printf("Not existing");
+		printf("Not existing \n");
 		return 0;
 
 		// Le fichier n'existe pas
 	}
 	else {
-		printf("Existing");
+		printf("Existing \n");
 		// le fichier existe !
+
 	}
 
 	fgets(ligneFichier, NB_BLOCS_LARGEUR * NB_BLOCS_HAUTEUR + 1, fichier);

@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
 
-	sf::Sprite *ecran = NULL, *menu = NULL;
+	sf::Sprite *ecran = NULL;
 	sf::Vector2i positionMenu(0, 0);
 	sf::Event event;
 
@@ -39,23 +39,19 @@ int main(int argc, char *argv[])
 	//Création de la fenêtre
 	sf::RenderWindow window{ sf::VideoMode(816, 816), "Elltaker" };
 	sf::Texture textureMenu;
+	sf::Sprite menu;
+	
 
 	// • Texture du menu
-	if (!textureMenu.loadFromFile("img/menu.png"))
-	{
-		// erreur
-	}
-
-	sf::Sprite spriteMenu;
-	spriteMenu.setTexture(textureMenu);
-
+	textureMenu.loadFromFile("img/menu.png");
+	menu.setTexture(textureMenu);
 
 	// • Ajout d'un icône personnalisé
 	sf::Image icon;
 	icon.loadFromFile("img/icon.png");
 	window.setIcon(192, 192, icon.getPixelsPtr());
 
-	window.draw(spriteMenu);
+	window.draw(menu);
 	window.display();
 
 	while (continuer)

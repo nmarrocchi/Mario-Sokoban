@@ -69,7 +69,7 @@ void jouer(sf::RenderWindow* window)
 	// • Clear Window
 	window->clear();
 
-		/* • Chargement du niveau • */
+	/* • Chargement du niveau • */
 	if (!chargerNiveau(carte))
 	{
 		exit(EXIT_FAILURE);
@@ -107,19 +107,19 @@ void jouer(sf::RenderWindow* window)
 			{
 			case sf::Keyboard::Up:
 				playerActuel = player[HAUT];
-				deplacerJoueur(carte, &positionJoueur, HAUT, &window);
+				deplacerJoueur(carte, &positionJoueur, HAUT, window);
 				break;
 			case sf::Keyboard::Down:
 				playerActuel = player[BAS];
-				deplacerJoueur(carte, &positionJoueur, BAS, &window);
+				deplacerJoueur(carte, &positionJoueur, BAS, window);
 				break;
 			case sf::Keyboard::Left:
 				playerActuel = player[GAUCHE];
-				deplacerJoueur(carte, &positionJoueur, GAUCHE, &window);
+				deplacerJoueur(carte, &positionJoueur, GAUCHE, window);
 				break;
 			case sf::Keyboard::Right:
 				playerActuel = player[DROITE];
-				deplacerJoueur(carte, &positionJoueur, DROITE, &window);
+				deplacerJoueur(carte, &positionJoueur, DROITE, window);
 				break;
 
 			}
@@ -161,19 +161,19 @@ void jouer(sf::RenderWindow* window)
 		}
 
 
-			// • Si aucun objectif sur la carte, alors gagné
-			if (!objectifsRestants)
-				continuer = 0;
-			
-		}
+		// • Si aucun objectif sur la carte, alors gagné
+		if (!objectifsRestants)
+			continuer = 0;
 
-		// • Désactivation répétition touches
-		window->setKeyRepeatEnabled(0);
-
-		window->display();
 	}
 
-	
+	// • Désactivation répétition touches
+	window->setKeyRepeatEnabled(0);
+
+	window->display();
+}
+
+
 void deplacerJoueur(int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *pos, int direction, sf::RenderWindow* window)
 {
 	switch (direction)
@@ -194,6 +194,7 @@ void deplacerJoueur(int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *pos, int direct
 		//deplacerCaisse(&carte[pos->x][pos->y - 1], &carte[pos->x][pos->y - 2]);
 
 		pos->y--; // On peut enfin faire monter le joueur (oufff !)
+		printf("X = %d ; Y = %d \n", pos->x, pos->y);
 		break;
 
 
@@ -212,6 +213,7 @@ void deplacerJoueur(int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *pos, int direct
 		//deplacerCaisse(&carte[pos->x][pos->y + 1], &carte[pos->x][pos->y + 2]);
 
 		pos->y++;
+		printf("X = %d ; Y = %d \n", pos->x, pos->y);
 		break;
 
 
@@ -230,6 +232,7 @@ void deplacerJoueur(int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *pos, int direct
 		//deplacerCaisse(&carte[pos->x - 1][pos->y], &carte[pos->x - 2][pos->y]);
 
 		pos->x--;
+		printf("X = %d ; Y = %d \n", pos->x, pos->y);
 		break;
 
 
@@ -247,6 +250,7 @@ void deplacerJoueur(int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *pos, int direct
 		//deplacerCaisse(&carte[pos->x + 1][pos->y], &carte[pos->x + 2][pos->y]);
 
 		pos->x++;
+		printf("X = %d ; Y = %d \n", pos->x, pos->y);
 		break;
 	}
 	window->display();
@@ -256,4 +260,3 @@ void deplacerCaisse()
 {
 
 }
-
