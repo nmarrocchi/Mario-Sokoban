@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
 		printf("Musique non chargée \n");
 	}
 	else {
-		printf("La musique a chargée \n");
 		music.play();
 	}
 
@@ -72,11 +71,9 @@ int main(int argc, char *argv[])
 				continuer = 0;
 				break;
 			case sf::Keyboard::Numpad1: // • Demande à jouer
-				printf("jouer() \n");
 				jouer(&window);
 				break;
 			case sf::Keyboard::Numpad2: // • Demande l'éditeur de niveaux
-				printf("editeur() \n");
 				editeur(&window);
 				break;
 

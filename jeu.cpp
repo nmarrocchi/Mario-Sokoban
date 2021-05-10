@@ -18,9 +18,8 @@ Rôle : Fonctions du jeu.
 
 void jouer(sf::RenderWindow* window)
 {
-	printf("Jouer \n");
 
-	sf::Sprite *player[4] = { NULL }; /* • 4 surfaces pour chacune des directions du joueur • */
+	sf::Sprite *player[4] = { NULL }; // • 4 surfaces pour chacune des directions du joueur
 	sf::Sprite *mur = NULL, *caisse = NULL, *caisseOK = NULL, *objectif = NULL, *playerActuel = NULL;
 	sf::Vector2i position(0, 0), positionJoueur(0, 0);
 	sf::Event event;
@@ -28,7 +27,7 @@ void jouer(sf::RenderWindow* window)
 	int continuer = 1, objectifsRestants = 0, i = 0, j = 0;
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
 
-	/* • Chargement des sprites (décors, personnage...) • */
+	// • Chargement des sprites (décors, personnage...)
 
 	sf::Texture textureMur;
 	textureMur.loadFromFile("img/mur.jpg");
@@ -75,13 +74,7 @@ void jouer(sf::RenderWindow* window)
 	Player.setTexture(texturePlayerBas);
 
 
-
-	playerActuel = player[BAS]; /* • Paimon sera dirigé vers le bas au départ • */
-
-	// • Clear Window
-	window->clear();
-
-	/* • Chargement du niveau • */
+	// • Chargement du niveau
 	if (!chargerNiveau(carte))
 	{
 		exit(EXIT_FAILURE);
@@ -103,41 +96,13 @@ void jouer(sf::RenderWindow* window)
 
 
 
-	// • Activation répétition touches
-	window->setKeyRepeatEnabled(1);
 
 	while (continuer)
 	{
-		window->waitEvent(event);
-		switch (event.type)
-		{
-		case sf::Event::Closed:
-			continuer = 0;
-			break;
-		case sf::Event::KeyPressed:
-			switch (event.key.code)
-			{
-			case sf::Keyboard::Up:
-				playerActuel = player[HAUT];
-				deplacerJoueur(carte, &positionJoueur, HAUT, window);
-				break;
-			case sf::Keyboard::Down:
-				playerActuel = player[BAS];
-				deplacerJoueur(carte, &positionJoueur, BAS, window);
-				break;
-			case sf::Keyboard::Left:
-				playerActuel = player[GAUCHE];
-				deplacerJoueur(carte, &positionJoueur, GAUCHE, window);
-				break;
-			case sf::Keyboard::Right:
-				playerActuel = player[DROITE];
-				deplacerJoueur(carte, &positionJoueur, DROITE, window);
-				break;
 
-			}
-			break;
+		// • Clear Window
+		window->clear();
 
-		}
 
 		// • Put the blocs on the map
 		for (i = 0; i < NB_BLOCS_LARGEUR; i++)
@@ -163,106 +128,149 @@ void jouer(sf::RenderWindow* window)
 					break;
 				case PLAYER:
 					Player.setPosition(position.x, position.y);
-					window->draw(Player);
 					printf("i/j :     X = %d ; Y = %d \n", i, j);
-					printf("Player :     X = %d ; Y = %d \n", positionJoueur.x, positionJoueur.y);
 					break;
 				}
 
 			}
 		}
 
-
-		// • Si aucun objectif sur la carte, alors gagné
-		if (!objectifsRestants)
+		window->waitEvent(event);
+		switch (event.type)
+		{
+		case sf::Event::Closed:
 			continuer = 0;
+			break;
+		case sf::Event::KeyPressed:
+			switch (event.key.code)
+			{
+			case sf::Keyboard::Up:
+				position.y = position.y -1;
+				//deplacerJoueur(carte, &position, HAUT, window);
+				break;
+			case sf::Keyboard::Down:
+				position.y = position.y +1;
+				//deplacerJoueur(carte, &position, BAS, window);
+				break;
+			case sf::Keyboard::Left:
+				position.x = position.x - 1;
+				//deplacerJoueur(carte, &position, GAUCHE, window);
+				break;
+			case sf::Keyboard::Right:
+				position.x = position.x + 1;
+				//deplacerJoueur(carte, &position, DROITE, window);
+				break;
+			case sf::Keyboard::Escape:
+				continuer = 0;
+				break;
+
+				printf("\n Player Position : \n X = %d ; Y = %d \n", position.x, position.y);
+
+			}
+			break;
+
+		}
+
+		window->draw(Player);
+
+		window->display();
 
 	}
-
-	// • Désactivation répétition touches
-	window->setKeyRepeatEnabled(0);
-
+	// • Screen Refresh
 	window->display();
+
+	
+	window->clear();
+	sf::Texture textureMenu;
+	sf::Sprite menu;
+
+
+	// • Texture du menu
+	textureMenu.loadFromFile("img/menu.png");
+	menu.setTexture(textureMenu);
+
+	window->draw(menu);
+	window->display();
+
 }
 
 
-void deplacerJoueur(int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *pos, int direction, sf::RenderWindow* window)
+void deplacerJoueur(int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *playerPosition, int direction, sf::RenderWindow* window)
 {
 	switch (direction)
 	{
 	case HAUT:
-		if (pos->y - 1 < 0) // Si le joueur dépasse l'écran, on arrête
+		if (playerPosition->y - 1 < 0) // • Si le joueur dépasse l'écran, on arrête
 			break;
-		if (carte[pos->x][pos->y - 1] == MUR) // S'il y a un mur, on arrête
+		if (carte[playerPosition->x][playerPosition->y - 1] == MUR) // • Si mur, on arrête
 			break;
-		// Si on veut pousser une caisse, il faut vérifier qu'il n'y a pas de mur derrière (ou une autre caisse, ou la limite du monde)
-		if ((carte[pos->x][pos->y - 1] == CAISSE || carte[pos->x][pos->y - 1] == CAISSE_OK) &&
-			(pos->y - 2 < 0 || carte[pos->x][pos->y - 2] == MUR ||
-				carte[pos->x][pos->y - 2] == CAISSE || carte[pos->x][pos->y - 2] == CAISSE_OK))
+		// • Si caisse à pousser, verif si mur / caisse / limite map derrière
+		if ((carte[playerPosition->x][playerPosition->y - 1] == CAISSE || carte[playerPosition->x][playerPosition->y - 1] == CAISSE_OK) &&
+			(playerPosition->y - 2 < 0 || carte[playerPosition->x][playerPosition->y - 2] == MUR ||
+				carte[playerPosition->x][playerPosition->y - 2] == CAISSE || carte[playerPosition->x][playerPosition->y - 2] == CAISSE_OK))
 			break;
 
-		// Si on arrive là, c'est qu'on peut déplacer le joueur !
-		// On vérifie d'abord s'il y a une caisse à déplacer
-		//deplacerCaisse(&carte[pos->x][pos->y - 1], &carte[pos->x][pos->y - 2]);
+		// • Verif si caisse à déplaçer
+		//deplacerCaisse(&carte[playerPosition->x][playerPosition->y - 1], &carte[playerPosition->x][playerPosition->y - 2]);
 
-		pos->y--; // On peut enfin faire monter le joueur (oufff !)
-		printf("X = %d ; Y = %d \n", pos->x, pos->y);
+		playerPosition->y--;
+		printf("X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
 		break;
 
 
 	case BAS:
-		if (pos->y + 1 >= NB_BLOCS_HAUTEUR)
+		if (playerPosition->y + 1 >= NB_BLOCS_HAUTEUR)
 			break;
-		if (carte[pos->x][pos->y + 1] == MUR)
-			break;
-
-		if ((carte[pos->x][pos->y + 1] == CAISSE || carte[pos->x][pos->y + 1] == CAISSE_OK) &&
-			(pos->y + 2 >= NB_BLOCS_HAUTEUR || carte[pos->x][pos->y + 2] == MUR ||
-				carte[pos->x][pos->y + 2] == CAISSE || carte[pos->x][pos->y + 2] == CAISSE_OK))
+		if (carte[playerPosition->x][playerPosition->y + 1] == MUR)
 			break;
 
+		if ((carte[playerPosition->x][playerPosition->y + 1] == CAISSE || carte[playerPosition->x][playerPosition->y + 1] == CAISSE_OK) &&
+			(playerPosition->y + 2 >= NB_BLOCS_HAUTEUR || carte[playerPosition->x][playerPosition->y + 2] == MUR ||
+				carte[playerPosition->x][playerPosition->y + 2] == CAISSE || carte[playerPosition->x][playerPosition->y + 2] == CAISSE_OK))
+			break;
 
-		//deplacerCaisse(&carte[pos->x][pos->y + 1], &carte[pos->x][pos->y + 2]);
 
-		pos->y++;
-		printf("X = %d ; Y = %d \n", pos->x, pos->y);
+		//deplacerCaisse(&carte[playerPosition->x][playerPosition->y + 1], &carte[playerPosition->x][playerPosition->y + 2]);
+
+		playerPosition->y++;
+		printf("X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
 		break;
 
 
 	case GAUCHE:
-		if (pos->x - 1 < 0)
+		if (playerPosition->x - 1 < 0)
 			break;
-		if (carte[pos->x - 1][pos->y] == MUR)
-			break;
-
-		if ((carte[pos->x - 1][pos->y] == CAISSE || carte[pos->x - 1][pos->y] == CAISSE_OK) &&
-			(pos->x - 2 < 0 || carte[pos->x - 2][pos->y] == MUR ||
-				carte[pos->x - 2][pos->y] == CAISSE || carte[pos->x - 2][pos->y] == CAISSE_OK))
+		if (carte[playerPosition->x - 1][playerPosition->y] == MUR)
 			break;
 
+		if ((carte[playerPosition->x - 1][playerPosition->y] == CAISSE || carte[playerPosition->x - 1][playerPosition->y] == CAISSE_OK) &&
+			(playerPosition->x - 2 < 0 || carte[playerPosition->x - 2][playerPosition->y] == MUR ||
+				carte[playerPosition->x - 2][playerPosition->y] == CAISSE || carte[playerPosition->x - 2][playerPosition->y] == CAISSE_OK))
+			break;
 
-		//deplacerCaisse(&carte[pos->x - 1][pos->y], &carte[pos->x - 2][pos->y]);
 
-		pos->x--;
-		printf("X = %d ; Y = %d \n", pos->x, pos->y);
+		//deplacerCaisse(&carte[playerPosition->x - 1][playerPosition->y], &carte[playerPosition->x - 2][playerPosition->y]);
+
+		playerPosition->x--;
+		printf("X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
 		break;
 
 
 	case DROITE:
-		if (pos->x + 1 >= NB_BLOCS_LARGEUR)
+		if (playerPosition->x + 1 >= NB_BLOCS_LARGEUR)
 			break;
-		if (carte[pos->x + 1][pos->y] == MUR)
-			break;
-
-		if ((carte[pos->x + 1][pos->y] == CAISSE || carte[pos->x + 1][pos->y] == CAISSE_OK) &&
-			(pos->x + 2 >= NB_BLOCS_LARGEUR || carte[pos->x + 2][pos->y] == MUR ||
-				carte[pos->x + 2][pos->y] == CAISSE || carte[pos->x + 2][pos->y] == CAISSE_OK))
+		if (carte[playerPosition->x + 1][playerPosition->y] == MUR)
 			break;
 
-		//deplacerCaisse(&carte[pos->x + 1][pos->y], &carte[pos->x + 2][pos->y]);
+		if ((carte[playerPosition->x + 1][playerPosition->y] == CAISSE || carte[playerPosition->x + 1][playerPosition->y] == CAISSE_OK) &&
+			(playerPosition->x + 2 >= NB_BLOCS_LARGEUR || carte[playerPosition->x + 2][playerPosition->y] == MUR ||
+				carte[playerPosition->x + 2][playerPosition->y] == CAISSE || carte[playerPosition->x + 2][playerPosition->y] == CAISSE_OK))
+			break;
 
-		pos->x++;
-		printf("X = %d ; Y = %d \n", pos->x, pos->y);
+		//deplacerCaisse(&carte[playerPosition->x + 1][playerPosition->y], &carte[playerPosition->x + 2][playerPosition->y]);
+
+		playerPosition->x++;
+		printf("X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
 		break;
 	}
 	window->display();

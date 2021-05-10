@@ -144,6 +144,9 @@ void editeur(sf::RenderWindow* window)
 			case sf::Keyboard::Num4:
 				objetActuel = PLAYER;
 				break;
+			case sf::Keyboard::Escape:
+				continuer = 0;
+				break;
 			}
 			break;
 		}
@@ -212,5 +215,16 @@ void editeur(sf::RenderWindow* window)
 		window->display();
 
 	}
+	window->clear();
+	sf::Texture textureMenu;
+	sf::Sprite menu;
+
+
+	// • Texture du menu
+	textureMenu.loadFromFile("img/menu.png");
+	menu.setTexture(textureMenu);
+
+	window->draw(menu);
+	window->display();
 
 }
