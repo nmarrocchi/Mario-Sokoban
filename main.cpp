@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 	// • Ajout d'un icône personnalisé
 	sf::Image icon;
 	icon.loadFromFile("img/icon.png");
-	window.setIcon(192, 192, icon.getPixelsPtr());
+	window.setIcon(256, 256, icon.getPixelsPtr());
 
 	window.draw(menu);
 	window.display();

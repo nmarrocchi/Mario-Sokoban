@@ -31,22 +31,34 @@ void jouer(sf::RenderWindow* window)
 	/* • Chargement des sprites (décors, personnage...) • */
 
 	sf::Texture textureMur;
-	sf::Texture textureCaisse;
-	sf::Texture textureCaisseOK;
-	sf::Texture textureObjectif;
-	sf::Texture texturePlayerBas;
-	sf::Texture texturePlayerGauche;
-	sf::Texture texturePlayerHaut;
-	sf::Texture texturePlayerDroite;
-
-
 	textureMur.loadFromFile("img/mur.jpg");
+
+
+	sf::Texture textureCaisse;
 	textureCaisse.loadFromFile("img/caisse.jpg");
+
+
+	sf::Texture textureCaisseOK;
 	textureCaisseOK.loadFromFile("img/caisse_ok.jpg");
+
+
+	sf::Texture textureObjectif;
 	textureObjectif.loadFromFile("img/objectif.png");
+
+
+	sf::Texture texturePlayerBas;
 	texturePlayerBas.loadFromFile("img/mario_bas.gif");
+
+
+	sf::Texture texturePlayerGauche;
 	texturePlayerGauche.loadFromFile("img/mario_gauche.gif");
+
+
+	sf::Texture texturePlayerHaut;
 	texturePlayerHaut.loadFromFile("img/mario_haut.gif");
+
+
+	sf::Texture texturePlayerDroite;
 	texturePlayerDroite.loadFromFile("img/mario_droite.gif");
 
 
@@ -152,8 +164,8 @@ void jouer(sf::RenderWindow* window)
 				case PLAYER:
 					Player.setPosition(position.x, position.y);
 					window->draw(Player);
-					printf("X = %d ; Y = %d", i, j);
-					printf("X = %d ; Y = %d", positionJoueur.x, positionJoueur.y);
+					printf("i/j :     X = %d ; Y = %d \n", i, j);
+					printf("Player :     X = %d ; Y = %d \n", positionJoueur.x, positionJoueur.y);
 					break;
 				}
 

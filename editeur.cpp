@@ -22,7 +22,7 @@ void editeur(sf::RenderWindow* window)
 {
 
 	sf::Sprite *mur = NULL, *caisse = NULL, *objectif = NULL, *PlayerActuel = NULL;
-	sf::Vector2i position(0, 0), cursorCoords;
+	sf::Vector2i position(0, 0), cursorCoords(0, 0);
 	sf::Event event;
 
 	int continuer = 1, clicGaucheEnCours = 0, clicDroitEnCours = 0;
@@ -74,8 +74,6 @@ void editeur(sf::RenderWindow* window)
 	// • Boucle éditeur
 	while (continuer)
 	{
-		sf::Mouse::getPosition();
-		//printf("X = %d ; Y = %d \n", cursorCoords.x, cursorCoords.y);
 
 		window->waitEvent(event);
 		switch (event.type)
@@ -154,6 +152,7 @@ void editeur(sf::RenderWindow* window)
 		// • Clear Window
 		window->clear();
 
+
 		// • Put the blocs on the map
 		for (i = 0; i < NB_BLOCS_LARGEUR; i++)
 		{
@@ -183,6 +182,30 @@ void editeur(sf::RenderWindow* window)
 				}
 
 			}
+
+			// • Set Cursor Block Sprite to indicate what can be used
+			cursorCoords = sf::Mouse::getPosition();
+
+			switch (objetActuel)
+			{
+			case MUR:
+				Test.setTexture(textureMur);
+				break;
+			case CAISSE:
+				Test.setTexture(textureCaisse);
+				break;
+			case OBJECTIF:
+				Test.setTexture(textureObjectif);
+				break;
+			case PLAYER:
+				Test.setTexture(texturePlayerBas);
+				break;
+			}
+
+			window->draw(Test);
+			Test.setPosition(cursorCoords.x - 550, cursorCoords.y - 150);
+
+
 		}
 
 		// • Screen Refresh
