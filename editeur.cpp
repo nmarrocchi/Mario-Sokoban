@@ -22,9 +22,8 @@ void editeur(sf::RenderWindow* window)
 {
 
 	sf::Sprite *mur = NULL, *caisse = NULL, *objectif = NULL, *PlayerActuel = NULL;
-	sf::Vector2i position(0, 0);
+	sf::Vector2i position(0, 0), cursorCoords;
 	sf::Event event;
-	POINT cursorCoords;
 
 	int continuer = 1, clicGaucheEnCours = 0, clicDroitEnCours = 0;
 	int objetActuel = MUR, i = 0, j = 0;
@@ -40,11 +39,15 @@ void editeur(sf::RenderWindow* window)
 	sf::Texture textureObjectif;
 	sf::Texture texturePlayerBas;
 
+	sf::Texture textureTest;
+
 
 	textureMur.loadFromFile("img/mur.jpg");
 	textureCaisse.loadFromFile("img/caisse.jpg");
 	textureObjectif.loadFromFile("img/objectif.png");
 	texturePlayerBas.loadFromFile("img/mario_bas.gif");
+
+	textureTest.loadFromFile("img/caisse.jpg");
 
 
 	sf::Sprite Mur;
@@ -52,11 +55,15 @@ void editeur(sf::RenderWindow* window)
 	sf::Sprite Objectif;
 	sf::Sprite PlayerBas;
 
+	sf::Sprite Test;
+
 
 	Mur.setTexture(textureMur);
 	Caisse.setTexture(textureCaisse);
 	Objectif.setTexture(textureObjectif);
 	PlayerBas.setTexture(texturePlayerBas);
+
+	Test.setTexture(textureTest);
 
 
 	if (!chargerNiveau(carte))
@@ -67,6 +74,9 @@ void editeur(sf::RenderWindow* window)
 	// • Boucle éditeur
 	while (continuer)
 	{
+		sf::Mouse::getPosition();
+		//printf("X = %d ; Y = %d \n", cursorCoords.x, cursorCoords.y);
+
 		window->waitEvent(event);
 		switch (event.type)
 		{
