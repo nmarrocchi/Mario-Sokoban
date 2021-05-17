@@ -29,6 +29,11 @@ void editeur(sf::RenderWindow* window)
 	int objetActuel = MUR, i = 0, j = 0;
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
 
+	int cx = GetSystemMetrics(SM_CXSCREEN);
+	int cy = GetSystemMetrics(SM_CYSCREEN);
+	int crx = (cx - 816) / 2 ;
+	int cry = (cy - 816) / 2 ;
+	printf("%d , %d", crx, cry);
 
 
 
@@ -39,7 +44,7 @@ void editeur(sf::RenderWindow* window)
 	sf::Texture textureObjectif;
 	sf::Texture texturePlayerBas;
 
-	sf::Texture textureTest;
+	sf::Texture textureCursorBlock;
 
 
 	textureMur.loadFromFile("img/mur.jpg");
@@ -47,7 +52,7 @@ void editeur(sf::RenderWindow* window)
 	textureObjectif.loadFromFile("img/objectif.png");
 	texturePlayerBas.loadFromFile("img/mario_bas.gif");
 
-	textureTest.loadFromFile("img/caisse.jpg");
+	textureCursorBlock.loadFromFile("img/caisse.jpg");
 
 
 	sf::Sprite Mur;
@@ -55,7 +60,7 @@ void editeur(sf::RenderWindow* window)
 	sf::Sprite Objectif;
 	sf::Sprite PlayerBas;
 
-	sf::Sprite Test;
+	sf::Sprite CursorBlock;
 
 
 	Mur.setTexture(textureMur);
@@ -63,7 +68,7 @@ void editeur(sf::RenderWindow* window)
 	Objectif.setTexture(textureObjectif);
 	PlayerBas.setTexture(texturePlayerBas);
 
-	Test.setTexture(textureTest);
+	CursorBlock.setTexture(textureCursorBlock);
 
 
 	if (!chargerNiveau(carte))
@@ -74,6 +79,8 @@ void editeur(sf::RenderWindow* window)
 	// • Boucle éditeur
 	while (continuer)
 	{
+
+		
 
 		window->waitEvent(event);
 		switch (event.type)
@@ -144,7 +151,7 @@ void editeur(sf::RenderWindow* window)
 			case sf::Keyboard::Num4:
 				objetActuel = PLAYER;
 				break;
-			case sf::Keyboard::Escape:
+			case sf::Keyboard::Num0:
 				continuer = 0;
 				break;
 			}
@@ -188,26 +195,28 @@ void editeur(sf::RenderWindow* window)
 
 			// • Set Cursor Block Sprite to indicate what can be used
 			cursorCoords = sf::Mouse::getPosition();
+			printf("X = %d, Y = %d \n", cursorCoords.x - crx, cursorCoords.y - cry);
 
 			switch (objetActuel)
 			{
 			case MUR:
-				Test.setTexture(textureMur);
+				CursorBlock.setTexture(textureMur);
 				break;
 			case CAISSE:
-				Test.setTexture(textureCaisse);
+				CursorBlock.setTexture(textureCaisse);
 				break;
 			case OBJECTIF:
-				Test.setTexture(textureObjectif);
+				CursorBlock.setTexture(textureObjectif);
 				break;
 			case PLAYER:
-				Test.setTexture(texturePlayerBas);
+				CursorBlock.setTexture(texturePlayerBas);
 				break;
 			}
 
-			window->draw(Test);
-			Test.setPosition(cursorCoords.x - 550, cursorCoords.y - 150);
+			window->draw(CursorBlock);
 
+			CursorBlock.move(cursorCoords.x - crx, cursorCoords.y - cry);
+			
 
 		}
 

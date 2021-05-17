@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
+#include <thread>
 
 #include "const.h"
 #include "jeu.h"
@@ -31,12 +32,12 @@ int main(int argc, char *argv[])
 		printf("Musique non chargée \n");
 	}
 	else {
-		music.play();
+	music.play();
+	music.setLoop(true);
 	}
 
-
 	//Création de la fenêtre
-	sf::RenderWindow window{ sf::VideoMode(816, 816), "Elltaker" };
+	sf::RenderWindow window{ sf::VideoMode(816, 816), "Soulworker" };
 	sf::Texture textureMenu;
 	sf::Sprite menu;
 	
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
 	// • Ajout d'un icône personnalisé
 	sf::Image icon;
 	icon.loadFromFile("img/icon.png");
-	window.setIcon(256, 256, icon.getPixelsPtr());
+	window.setIcon(180, 180, icon.getPixelsPtr());
 
 	window.draw(menu);
 	window.display();
