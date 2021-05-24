@@ -29,12 +29,11 @@ void editeur(sf::RenderWindow* window)
 	int objetActuel = MUR, i = 0, j = 0;
 	int carte[NB_BLOCS_LARGEUR][NB_BLOCS_HAUTEUR] = { 0 };
 
+	// • Calcul de la position du bloc du curseur
 	int cx = GetSystemMetrics(SM_CXSCREEN);
 	int cy = GetSystemMetrics(SM_CYSCREEN);
-	int crx = (cx - 816) / 2 ;
-	int cry = (cy - 816) / 2 ;
-	printf("%d , %d", crx, cry);
-
+	int crx = (cx - LARGEUR_FENETRE) / 2 ;
+	int cry = (cy - HAUTEUR_FENETRE) / 2 ;
 
 
 	// • Chargement des sprites (décors, personnage...)
@@ -118,22 +117,6 @@ void editeur(sf::RenderWindow* window)
 			else if (event.MouseButtonPressed == sf::Mouse::Right)
 				clicDroitEnCours = 0;
 			break;
-			
-			// • Quand bouton enfoncé, changement en chaine des bloc survolés
-		case sf::Event::MouseMoved:
-			
-			/*
-			if (clicGaucheEnCours) // • Si on déplace la souris et que le bouton gauche de la souris est enfoncé
-			{
-				carte[event.mouseButton.x / TAILLE_BLOC][event.mouseButton.y / TAILLE_BLOC] = objetActuel;
-			}
-			else if (clicDroitEnCours) // • Pareil pour le bouton droit de la souris
-			{
-				carte[event.mouseButton.x / TAILLE_BLOC][event.mouseButton.y / TAILLE_BLOC] = CAISSE;
-			}
-			break;
-			*/
-			
 
 		case sf::Event::KeyPressed:
 			switch (event.key.code)
@@ -200,7 +183,7 @@ void editeur(sf::RenderWindow* window)
 
 			// • Set Cursor Block Sprite to indicate what can be used
 			cursorCoords = sf::Mouse::getPosition();
-			printf("X = %d, Y = %d \n", cursorCoords.x - crx, cursorCoords.y - cry);
+			printf("X = %d, Y = %d \n", cursorCoords.x, cursorCoords.y);
 
 			switch (objetActuel)
 			{
@@ -221,7 +204,7 @@ void editeur(sf::RenderWindow* window)
 			window->draw(CursorBlock);
 			window->draw(ItemsEditor);
 
-			CursorBlock.move(cursorCoords.x - crx, cursorCoords.y - cry);
+			CursorBlock.setPosition(cursorCoords.x - crx, cursorCoords.y - cry);
 			
 
 		}
