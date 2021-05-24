@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 		printf("Musique non chargée \n");
 	}
 	else {
-	music.play();
+	//music.play();
 	music.setLoop(true);
 	}
 

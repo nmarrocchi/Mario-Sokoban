@@ -29,6 +29,9 @@ void jouer(sf::RenderWindow* window)
 
 	// • Chargement des sprites (décors, personnage...)
 
+	sf::Texture textureFinishedLevel;
+	textureFinishedLevel.loadFromFile("img/FinishedLevel.png");
+
 	sf::Texture textureMur;
 	textureMur.loadFromFile("img/mur.jpg");
 
@@ -66,12 +69,14 @@ void jouer(sf::RenderWindow* window)
 	sf::Sprite CaisseOK;
 	sf::Sprite Objectif;
 	sf::Sprite Player;
+	sf::Sprite FinishedLevel;
 
 	Mur.setTexture(textureMur);
 	Caisse.setTexture(textureCaisse);
 	CaisseOK.setTexture(textureCaisseOK);
 	Objectif.setTexture(textureObjectif);
 	Player.setTexture(texturePlayerBas);
+	FinishedLevel.setTexture(textureFinishedLevel);
 
 
 	// • Chargement du niveau
@@ -90,7 +95,6 @@ void jouer(sf::RenderWindow* window)
 			{
 				positionJoueur.x = i;
 				positionJoueur.y = j;
-				printf("Player is at X = %d & Y = %d", positionJoueur.x, positionJoueur.y);
 			}
 		}
 	}
@@ -103,6 +107,7 @@ void jouer(sf::RenderWindow* window)
 
 		// • Clear Window
 		window->clear();
+		objectifsRestants = 0;
 
 		// • Put the blocs on the map
 		for (i = 0; i < NB_BLOCS_LARGEUR; i++)
@@ -122,15 +127,33 @@ void jouer(sf::RenderWindow* window)
 					window->draw(Caisse);
 					Caisse.setPosition(position.x, position.y);
 					break;
+				case CAISSE_OK:
+					window->draw(CaisseOK);
+					CaisseOK.setPosition(position.x, position.y);
+					break;
 				case OBJECTIF:
 					window->draw(Objectif);
 					Objectif.setPosition(position.x, position.y);
+					objectifsRestants++;
 					break;
 				}
 
 			}
 		}
-		Player.setPosition(positionJoueur.x * 68, positionJoueur.y * 68);
+
+		// Si on n'a trouvé aucun objectif sur la carte, c'est qu'on a gagné
+		if (objectifsRestants == 0)
+		{
+			printf("Finished\n");
+			window->draw(FinishedLevel);
+		}
+
+		if (objectifsRestants == 0 && sf::Event::KeyPressed == sf::Keyboard::Backspace)
+		{
+			printf("TRUE");
+		}
+
+		Player.setPosition(positionJoueur.x * TAILLE_BLOC, positionJoueur.y * TAILLE_BLOC);
 		window->draw(Player);
 
 		window->waitEvent(event);
@@ -143,16 +166,16 @@ void jouer(sf::RenderWindow* window)
 			switch (event.key.code)
 			{
 			case sf::Keyboard::Up:
-				deplacerJoueur(carte, &positionJoueur, HAUT, window);
+				deplacerJoueur(objectifsRestants, carte, &positionJoueur, HAUT, window);
 				break;
 			case sf::Keyboard::Down:
-				deplacerJoueur(carte, &positionJoueur, BAS, window);
+				deplacerJoueur(objectifsRestants, carte, &positionJoueur, BAS, window);
 				break;
 			case sf::Keyboard::Left:
-				deplacerJoueur(carte, &positionJoueur, GAUCHE, window);
+				deplacerJoueur(objectifsRestants, carte, &positionJoueur, GAUCHE, window);
 				break;
 			case sf::Keyboard::Right:
-				deplacerJoueur(carte, &positionJoueur, DROITE, window);
+				deplacerJoueur(objectifsRestants, carte, &positionJoueur, DROITE, window);
 				break;
 			case sf::Keyboard::Num0:
 				continuer = 0;
@@ -181,113 +204,133 @@ void jouer(sf::RenderWindow* window)
 
 }
 
-
-void deplacerJoueur(int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *playerPosition, int direction, sf::RenderWindow* window)
+void deplacerJoueur(int objectifRestant, int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *playerPosition, int direction, sf::RenderWindow* window)
 {
+
 	if (direction == HAUT)
 	{
-		if (playerPosition->y > 0) // • Verif si dépasse map
+		if (playerPosition->y - 1 < 0)
+		{}
+		else
 		{
-			if (carte[playerPosition->x][playerPosition->y - 1] != MUR) // • Si autre que mur, joueur continue
+			if (carte[playerPosition->x][playerPosition->y - 1] == MUR)
+			{}
+			else
 			{
+				// Si on veut pousser une caisse, il faut vérifier qu'il n'y a pas de mur derrière (ou une autre caisse, ou la limite du monde)
 				if ((carte[playerPosition->x][playerPosition->y - 1] == CAISSE || carte[playerPosition->x][playerPosition->y - 1] == CAISSE_OK) &&
 					(playerPosition->y - 2 < 0 || carte[playerPosition->x][playerPosition->y - 2] == MUR ||
 						carte[playerPosition->x][playerPosition->y - 2] == CAISSE || carte[playerPosition->x][playerPosition->y - 2] == CAISSE_OK))
 				{}
 				else
 				{
-					// • Verif si caisse à déplaçer
 					//deplacerCaisse(&carte[playerPosition->x][playerPosition->y - 1], &carte[playerPosition->x][playerPosition->y - 2]);
 					playerPosition->y--;
 				}
-				
 			}
-
-			printf("\n\n ------------------------------ \n");
-			printf("PLAYER = X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
-			printf("HAUT\n");
 		}
+
+		printf("\n\n ------------------------------ \n");
+		printf("PLAYER = X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
+		printf("HAUT\n");
+		window->display();
+
 	}
+
 
 	else if (direction == BAS)
 	{
-		if (playerPosition->y < NB_BLOCS_HAUTEUR-1) // • Verif si dépasse map
+		if (playerPosition->y + 1 > NB_BLOCS_HAUTEUR)
+		{}
+		else
 		{
-			if (carte[playerPosition->x][playerPosition->y + 1] != MUR) // • Si autre que mur, joueur continue
+			if (carte[playerPosition->x][playerPosition->y + 1] == MUR)
+			{}
+			else
 			{
+				// Si on veut pousser une caisse, il faut vérifier qu'il n'y a pas de mur derrière (ou une autre caisse, ou la limite du monde)
 				if ((carte[playerPosition->x][playerPosition->y + 1] == CAISSE || carte[playerPosition->x][playerPosition->y + 1] == CAISSE_OK) &&
 					(playerPosition->y + 2 < 0 || carte[playerPosition->x][playerPosition->y + 2] == MUR ||
 						carte[playerPosition->x][playerPosition->y + 2] == CAISSE || carte[playerPosition->x][playerPosition->y + 2] == CAISSE_OK))
-				{
-				}
+				{}
 				else
 				{
-					// • Verif si caisse à déplaçer
 					//deplacerCaisse(&carte[playerPosition->x][playerPosition->y + 1], &carte[playerPosition->x][playerPosition->y + 2]);
+
 					playerPosition->y++;
 				}
 			}
-
-			printf("\n\n ------------------------------ \n");
-			printf("PLAYER = X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
-			printf("BAS\n");
 		}
+
+		printf("\n\n ------------------------------ \n");
+		printf("PLAYER = X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
+		printf("BAS\n");
+		window->display();
 	}
 
 	else if (direction == DROITE)
 	{
-		if (playerPosition->x < NB_BLOCS_LARGEUR - 1) // • Verif si dépasse map
+		if (playerPosition->x + 1 > NB_BLOCS_LARGEUR)
+		{}
+		else
 		{
-			if (carte[playerPosition->x + 1][playerPosition->y] != MUR) // • Si autre que mur, joueur continue
+			if (carte[playerPosition->x + 1][playerPosition->y] == MUR)
+			{}
+			else
 			{
+				// Si on veut pousser une caisse, il faut vérifier qu'il n'y a pas de mur derrière (ou une autre caisse, ou la limite du monde)
 				if ((carte[playerPosition->x + 1][playerPosition->y] == CAISSE || carte[playerPosition->x + 1][playerPosition->y] == CAISSE_OK) &&
-					(playerPosition->x + 2 >= NB_BLOCS_LARGEUR || carte[playerPosition->x + 2][playerPosition->y] == MUR ||
-						carte[playerPosition->x + 2][playerPosition->y] == CAISSE || carte[playerPosition->x + 2][playerPosition->y] == CAISSE_OK))
-				{
-				}
+					(playerPosition->x + 2 < 0 || carte[playerPosition->y + 2][playerPosition->x] == MUR ||
+						carte[playerPosition->x + 2][playerPosition->x] == CAISSE || carte[playerPosition->x + 2][playerPosition->y] == CAISSE_OK))
+				{}
 				else
 				{
-					// • Verif si caisse à déplaçer
 					//deplacerCaisse(&carte[playerPosition->x + 1][playerPosition->y], &carte[playerPosition->x + 2][playerPosition->y]);
+
 					playerPosition->x++;
 				}
 			}
+		}
 
 			printf("\n\n ------------------------------ \n");
 			printf("PLAYER = X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
 			printf("DROITE\n");
-		}
+			window->display();
+
 	}
 
 	else if (direction == GAUCHE)
 	{
-		if (playerPosition->x > 0) // • Verif si dépasse map
+		if (playerPosition->x - 1 < 0)
+		{}
+		else
 		{
-			if (carte[playerPosition->x - 1][playerPosition->y] != MUR) // • Si autre que mur, joueur continue
+			if (carte[playerPosition->x - 1][playerPosition->y] == MUR)
+			{}
+			else
 			{
+				// Si on veut pousser une caisse, il faut vérifier qu'il n'y a pas de mur derrière (ou une autre caisse, ou la limite du monde)
 				if ((carte[playerPosition->x - 1][playerPosition->y] == CAISSE || carte[playerPosition->x - 1][playerPosition->y] == CAISSE_OK) &&
-					(playerPosition->x - 2 >= NB_BLOCS_LARGEUR || carte[playerPosition->x - 2][playerPosition->y] == MUR ||
+					(playerPosition->x - 2 < 0 || carte[playerPosition->x - 2][playerPosition->y] == MUR ||
 						carte[playerPosition->x - 2][playerPosition->y] == CAISSE || carte[playerPosition->x - 2][playerPosition->y] == CAISSE_OK))
-				{
-				}
+				{}
 				else
 				{
-					// • Verif si caisse à déplaçer
-					//deplacerCaisse(&carte[playerPosition->x - 1][playerPosition->y], &carte[playerPosition->x - 2][playerPosition->y]);
+					//deplacerCaisse(&carte[playerPosition->x][playerPosition->y + 1], &carte[playerPosition->x][playerPosition->y + 2]);
+
 					playerPosition->x--;
 				}
 			}
+		}
 
 			printf("\n\n ------------------------------ \n");
 			printf("PLAYER = X = %d ; Y = %d \n", playerPosition->x, playerPosition->y);
-			printf("DROITE\n");
-		}
+			printf("GAUCHE\n");
+			window->display();
 	}
-
-	window->display();
 }
 
-void deplacerCaisse()
+void deplacerCaisse(int objectifRestant, sf::Vector2i *pos, int direction, sf::RenderWindow* window)
 {
-
+	printf("");
 }
