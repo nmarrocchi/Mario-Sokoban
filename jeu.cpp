@@ -156,33 +156,38 @@ void jouer(sf::RenderWindow* window)
 		Player.setPosition(positionJoueur.x * TAILLE_BLOC, positionJoueur.y * TAILLE_BLOC);
 		window->draw(Player);
 
-		window->waitEvent(event);
-		switch (event.type)
+		if (objectifsRestants == 0) {}
+		else if(objectifsRestants > 0)
 		{
-		case sf::Event::Closed:
-			continuer = 0;
-			break;
-		case sf::Event::KeyPressed:
-			switch (event.key.code)
+			window->waitEvent(event);
+			switch (event.type)
 			{
-			case sf::Keyboard::Up:
-				deplacerJoueur(objectifsRestants, carte, &positionJoueur, HAUT, window);
-				break;
-			case sf::Keyboard::Down:
-				deplacerJoueur(objectifsRestants, carte, &positionJoueur, BAS, window);
-				break;
-			case sf::Keyboard::Left:
-				deplacerJoueur(objectifsRestants, carte, &positionJoueur, GAUCHE, window);
-				break;
-			case sf::Keyboard::Right:
-				deplacerJoueur(objectifsRestants, carte, &positionJoueur, DROITE, window);
-				break;
-			case sf::Keyboard::Num0:
+			case sf::Event::Closed:
 				continuer = 0;
+				break;
+			case sf::Event::KeyPressed:
+				switch (event.key.code)
+				{
+				case sf::Keyboard::Up:
+					deplacerJoueur(objectifsRestants, carte, &positionJoueur, HAUT, window);
+					break;
+				case sf::Keyboard::Down:
+					deplacerJoueur(objectifsRestants, carte, &positionJoueur, BAS, window);
+					break;
+				case sf::Keyboard::Left:
+					deplacerJoueur(objectifsRestants, carte, &positionJoueur, GAUCHE, window);
+					break;
+				case sf::Keyboard::Right:
+					deplacerJoueur(objectifsRestants, carte, &positionJoueur, DROITE, window);
+					break;
+				case sf::Keyboard::Num0:
+					continuer = 0;
+					break;
+
+				}
 				break;
 
 			}
-			break;
 
 		}
 
@@ -224,7 +229,7 @@ void deplacerJoueur(int objectifRestant, int carte[][NB_BLOCS_HAUTEUR], sf::Vect
 				{}
 				else
 				{
-					//deplacerCaisse(&carte[playerPosition->x][playerPosition->y - 1], &carte[playerPosition->x][playerPosition->y - 2]);
+					deplacerCaisse(objectifRestant, &carte[playerPosition->x][playerPosition->y - 1], &carte[playerPosition->x][playerPosition->y - 2], window);
 					playerPosition->y--;
 				}
 			}
@@ -255,8 +260,7 @@ void deplacerJoueur(int objectifRestant, int carte[][NB_BLOCS_HAUTEUR], sf::Vect
 				{}
 				else
 				{
-					//deplacerCaisse(&carte[playerPosition->x][playerPosition->y + 1], &carte[playerPosition->x][playerPosition->y + 2]);
-
+					deplacerCaisse(objectifRestant, &carte[playerPosition->x][playerPosition->y + 1], &carte[playerPosition->x][playerPosition->y + 2], window);
 					playerPosition->y++;
 				}
 			}
@@ -285,8 +289,7 @@ void deplacerJoueur(int objectifRestant, int carte[][NB_BLOCS_HAUTEUR], sf::Vect
 				{}
 				else
 				{
-					//deplacerCaisse(&carte[playerPosition->x + 1][playerPosition->y], &carte[playerPosition->x + 2][playerPosition->y]);
-
+					deplacerCaisse(objectifRestant, &carte[playerPosition->x + 1][playerPosition->y], &carte[playerPosition->x + 2][playerPosition->y], window);
 					playerPosition->x++;
 				}
 			}
@@ -316,8 +319,7 @@ void deplacerJoueur(int objectifRestant, int carte[][NB_BLOCS_HAUTEUR], sf::Vect
 				{}
 				else
 				{
-					//deplacerCaisse(&carte[playerPosition->x][playerPosition->y + 1], &carte[playerPosition->x][playerPosition->y + 2]);
-
+					deplacerCaisse(objectifRestant, &carte[playerPosition->x - 1][playerPosition->y], &carte[playerPosition->x - 2][playerPosition->y], window);
 					playerPosition->x--;
 				}
 			}
@@ -330,7 +332,19 @@ void deplacerJoueur(int objectifRestant, int carte[][NB_BLOCS_HAUTEUR], sf::Vect
 	}
 }
 
-void deplacerCaisse(int objectifRestant, sf::Vector2i *pos, int direction, sf::RenderWindow* window)
+void deplacerCaisse(int objectifRestant, int *premiereCase, int *secondeCase, sf::RenderWindow* window)
 {
-	printf("");
+	if (*premiereCase == CAISSE || *premiereCase == CAISSE_OK)
+	{
+		if (*secondeCase == OBJECTIF)
+			*secondeCase = CAISSE_OK;
+		else
+			*secondeCase = CAISSE;
+
+		if (*premiereCase == CAISSE_OK)
+			*premiereCase = OBJECTIF;
+		else
+			*premiereCase = VIDE;
+	}
+	window->display();
 }
