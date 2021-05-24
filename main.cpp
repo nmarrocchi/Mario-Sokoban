@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	}
 
 	//Création de la fenêtre
-	sf::RenderWindow window{ sf::VideoMode(816, 816), "Elltaker" };
+	sf::RenderWindow window{ sf::VideoMode(540, 640), "Elltaker", sf::Style::Close };
 	sf::Texture textureMenu;
 	sf::Sprite menu;
 	

@@ -45,6 +45,7 @@ void editeur(sf::RenderWindow* window)
 	sf::Texture texturePlayerBas;
 
 	sf::Texture textureCursorBlock;
+	sf::Texture textureEditor;
 
 
 	textureMur.loadFromFile("img/mur.jpg");
@@ -53,6 +54,7 @@ void editeur(sf::RenderWindow* window)
 	texturePlayerBas.loadFromFile("img/mario_bas.gif");
 
 	textureCursorBlock.loadFromFile("img/caisse.jpg");
+	textureEditor.loadFromFile("img/ItemsEditor.png");
 
 
 	sf::Sprite Mur;
@@ -61,6 +63,7 @@ void editeur(sf::RenderWindow* window)
 	sf::Sprite PlayerBas;
 
 	sf::Sprite CursorBlock;
+	sf::Sprite ItemsEditor;
 
 
 	Mur.setTexture(textureMur);
@@ -69,6 +72,7 @@ void editeur(sf::RenderWindow* window)
 	PlayerBas.setTexture(texturePlayerBas);
 
 	CursorBlock.setTexture(textureCursorBlock);
+	ItemsEditor.setTexture(textureEditor);
 
 
 	if (!chargerNiveau(carte))
@@ -80,7 +84,8 @@ void editeur(sf::RenderWindow* window)
 	while (continuer)
 	{
 
-		
+		window->draw(ItemsEditor);
+		ItemsEditor.setPosition(0, 540);
 
 		window->waitEvent(event);
 		switch (event.type)
@@ -151,7 +156,7 @@ void editeur(sf::RenderWindow* window)
 			case sf::Keyboard::Num4:
 				objetActuel = PLAYER;
 				break;
-			case sf::Keyboard::Num0:
+			case sf::Keyboard::BackSpace:
 				continuer = 0;
 				break;
 			}
@@ -214,6 +219,7 @@ void editeur(sf::RenderWindow* window)
 			}
 
 			window->draw(CursorBlock);
+			window->draw(ItemsEditor);
 
 			CursorBlock.move(cursorCoords.x - crx, cursorCoords.y - cry);
 			

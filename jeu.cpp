@@ -31,6 +31,8 @@ void jouer(sf::RenderWindow* window)
 
 	sf::Texture textureFinishedLevel;
 	textureFinishedLevel.loadFromFile("img/FinishedLevel.png");
+	sf::Texture textureMove;
+	textureMove.loadFromFile("img/PlayerMove.png");
 
 	sf::Texture textureMur;
 	textureMur.loadFromFile("img/mur.jpg");
@@ -70,6 +72,7 @@ void jouer(sf::RenderWindow* window)
 	sf::Sprite Objectif;
 	sf::Sprite Player;
 	sf::Sprite FinishedLevel;
+	sf::Sprite PlayerMove;
 
 	Mur.setTexture(textureMur);
 	Caisse.setTexture(textureCaisse);
@@ -77,6 +80,7 @@ void jouer(sf::RenderWindow* window)
 	Objectif.setTexture(textureObjectif);
 	Player.setTexture(texturePlayerBas);
 	FinishedLevel.setTexture(textureFinishedLevel);
+	PlayerMove.setTexture(textureMove);
 
 
 	// • Chargement du niveau
@@ -109,6 +113,9 @@ void jouer(sf::RenderWindow* window)
 		window->clear();
 		objectifsRestants = 0;
 
+		window->draw(PlayerMove);
+		PlayerMove.setPosition(0, 540);
+
 		// • Put the blocs on the map
 		for (i = 0; i < NB_BLOCS_LARGEUR; i++)
 		{
@@ -139,25 +146,33 @@ void jouer(sf::RenderWindow* window)
 				}
 
 			}
+
 		}
 
-		// Si on n'a trouvé aucun objectif sur la carte, c'est qu'on a gagné
 		if (objectifsRestants == 0)
 		{
-			printf("Finished\n");
 			window->draw(FinishedLevel);
+
+			window->waitEvent(event);
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				continuer = 0;
+				break;
+			case sf::Event::KeyPressed:
+				switch (event.key.code)
+				{
+					break;
+				case sf::Keyboard::BackSpace:
+					continuer = 0;
+					break;
+
+				}
+				break;
+
+			}
 		}
-
-		if (objectifsRestants == 0 && sf::Event::KeyPressed == sf::Keyboard::Backspace)
-		{
-			printf("TRUE");
-		}
-
-		Player.setPosition(positionJoueur.x * TAILLE_BLOC, positionJoueur.y * TAILLE_BLOC);
-		window->draw(Player);
-
-		if (objectifsRestants == 0) {}
-		else if(objectifsRestants > 0)
+		else if (objectifsRestants > 0)
 		{
 			window->waitEvent(event);
 			switch (event.type)
@@ -180,7 +195,7 @@ void jouer(sf::RenderWindow* window)
 				case sf::Keyboard::Right:
 					deplacerJoueur(objectifsRestants, carte, &positionJoueur, DROITE, window);
 					break;
-				case sf::Keyboard::Num0:
+				case sf::Keyboard::BackSpace:
 					continuer = 0;
 					break;
 
@@ -189,6 +204,18 @@ void jouer(sf::RenderWindow* window)
 
 			}
 
+		}
+		
+
+		if (objectifsRestants == 0 && sf::Event::KeyPressed == sf::Keyboard::Backspace)
+		{
+			printf("TRUE");
+		}
+
+		Player.setPosition(positionJoueur.x * TAILLE_BLOC, positionJoueur.y * TAILLE_BLOC);
+		if(objectifsRestants != 0)
+		{
+			window->draw(Player);
 		}
 
 		window->display();
@@ -208,6 +235,7 @@ void jouer(sf::RenderWindow* window)
 	window->display();
 
 }
+
 
 void deplacerJoueur(int objectifRestant, int carte[][NB_BLOCS_HAUTEUR], sf::Vector2i *playerPosition, int direction, sf::RenderWindow* window)
 {
